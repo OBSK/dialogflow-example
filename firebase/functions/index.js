@@ -36,15 +36,16 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       agent.add(`Failed to write "${databaseEntry}" to the Firestore database.`);
     });
   }
-  function consultarDatos(agent) {
+  async function consultarDatos(agent) {
     console.log("Hola mundo");
     
-    axios.post('https://jsonplaceholder.typicode.com/posts/1')
-    .then(data => {
-      console.log(data);
-      agent.add('Logré obtener la información');
+    await axios.get('https://jsonplaceholder.typicode.com/posts/1')
+    .then(res => {
+      const response = res.data
+      console.log("Exito")
+      agent.add(response.body)
     })
-    .catch(error => agent.add('Hubo un error al procesar la información'));
+    .catch(error => console.log("Obtuve un error :", error));
   }
   // // Uncomment and edit to make your own intent handler
   // // uncomment `intentMap.set('your intent name here', yourFunctionHandler);`
